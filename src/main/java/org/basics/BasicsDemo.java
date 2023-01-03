@@ -28,6 +28,16 @@ public class BasicsDemo {
 
         System.out.println(placeID);
 
+        //Update address
+        given().log().all().queryParam("key", "qaclick123").header("Content-Type","application/json").
+                body("{\n" +
+                        "\"place_id\":\""+placeID+"\",\n" +
+                        "\"address\":\"70 Marley Place, South Africa\",\n" +
+                        "\"key\":\"qaclick123\"\n" +
+                        "}").when().put("maps/api/place/update/json").then().log().all().assertThat().statusCode(200).
+                body("msg",equalTo("Address successfully updated"));
+
+
 
 
 
