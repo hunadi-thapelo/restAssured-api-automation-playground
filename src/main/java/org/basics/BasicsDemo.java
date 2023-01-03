@@ -3,6 +3,7 @@ package org.basics;
 import io.restassured.RestAssured;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 public class BasicsDemo {
     public static void main(String[] args){
@@ -28,7 +29,7 @@ public class BasicsDemo {
                         "  \"website\": \"http://google.com\",\n" +
                         "  \"language\": \"French-IN\"\n" +
                         "}").when().post("maps/api/place/add/json").then().assertThat().statusCode(200).
-                log().all();
+                log().all().body("scope", equalTo("APP")).header("server","Apache/2.4.41 (Ubuntu)");
 
 
 
