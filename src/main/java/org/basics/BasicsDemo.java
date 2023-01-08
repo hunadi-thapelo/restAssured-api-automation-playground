@@ -29,13 +29,25 @@ public class BasicsDemo {
         System.out.println(placeID);
 
         //Update address
+        String newAddress = "20 Boston Hill, Johannesburg";
+
         given().log().all().queryParam("key", "qaclick123").header("Content-Type","application/json").
                 body("{\n" +
                         "\"place_id\":\""+placeID+"\",\n" +
-                        "\"address\":\"70 Marley Place, South Africa\",\n" +
+                        "\"address\":\""+newAddress+"\",\n" +
                         "\"key\":\"qaclick123\"\n" +
                         "}").when().put("maps/api/place/update/json").then().log().all().assertThat().statusCode(200).
                 body("msg",equalTo("Address successfully updated"));
+
+        //Get place
+        String getPlaceResponse = given().log().all().queryParam("key","qaclick123").queryParam("place_id",placeID)
+                .when().get("maps/api/place/get/json").then().assertThat().log().all().statusCode(200).extract().response().asString();
+
+
+        JsonPath jsonP = new JsonPath(getPlaceResponse); //for parsing Json
+        String newAdd = jsonP.get("address");
+
+        System.out.println(newAdd);
 
 
 
