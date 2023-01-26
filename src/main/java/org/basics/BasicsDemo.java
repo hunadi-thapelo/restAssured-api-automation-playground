@@ -3,6 +3,7 @@ package org.basics;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import org.files.payload;
+import org.testng.Assert;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -45,9 +46,10 @@ public class BasicsDemo {
 
 
         JsonPath jsonP = new JsonPath(getPlaceResponse); //for parsing Json
-        String newAdd = jsonP.get("address");
+        String actualnewAddress = jsonP.get("address");
 
-        System.out.println(newAdd);
+        System.out.println(actualnewAddress);
+        Assert.assertEquals(actualnewAddress,newAddress); //testNG assert to validate
 
 
 
