@@ -2,6 +2,7 @@ package org.basics;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import org.files.ReusableMethod;
 import org.files.payload;
 import org.testng.Assert;
 
@@ -45,7 +46,8 @@ public class BasicsDemo {
                 .when().get("maps/api/place/get/json").then().assertThat().log().all().statusCode(200).extract().response().asString();
 
 
-        JsonPath jsonP = new JsonPath(getPlaceResponse); //for parsing Json
+        //JsonPath jsonP = new JsonPath(getPlaceResponse); //for parsing Json
+        JsonPath jsonP = ReusableMethod.rawToJson(getPlaceResponse);
         String actualnewAddress = jsonP.get("address");
 
         System.out.println(actualnewAddress);
