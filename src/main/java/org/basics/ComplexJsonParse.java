@@ -9,5 +9,9 @@ public class ComplexJsonParse {
     {
         JsonPath js = new JsonPath(payload.coursePrice());
 
+        //1. Print No of courses returned by API
+        int courseCount = js.getInt("courses.size()");
+        System.out.println(courseCount);
+
     }
 }
