@@ -17,5 +17,9 @@ public class ComplexJsonParse {
         int totalAmount = js.getInt("dashboard.purchaseAmount"); //traverse parent to child
         System.out.println(totalAmount);
 
+        //3. Print Title of the first course
+        String titleFirstCourse = js.get("courses[0].title");
+        System.out.println(titleFirstCourse);
+
     }
 }
