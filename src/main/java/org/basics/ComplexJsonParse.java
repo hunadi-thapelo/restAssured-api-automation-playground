@@ -13,5 +13,9 @@ public class ComplexJsonParse {
         int courseCount = js.getInt("courses.size()");
         System.out.println(courseCount);
 
+        //2.Print Purchase Amount
+        int totalAmount = js.getInt("dashboard.purchaseAmount"); //traverse parent to child
+        System.out.println(totalAmount);
+
     }
 }
