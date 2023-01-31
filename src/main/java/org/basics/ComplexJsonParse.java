@@ -21,5 +21,13 @@ public class ComplexJsonParse {
         String titleFirstCourse = js.get("courses[0].title");
         System.out.println(titleFirstCourse);
 
+        //4. Print All course titles and their respective Prices
+        for(int i=0;i<courseCount;i++)
+        {
+            String title = js.get("courses["+i+"].title");
+            System.out.println(title);
+            System.out.println(js.get("courses["+i+"].price").toString());
+        }
+
     }
 }
