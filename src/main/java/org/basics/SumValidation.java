@@ -2,6 +2,7 @@ package org.basics;
 
 import io.restassured.path.json.JsonPath;
 import org.files.payload;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class SumValidation {
@@ -23,5 +24,7 @@ public class SumValidation {
 
         }
         System.out.println("Total sum " + totalSum);
+        int purchaseAmnt = js.getInt("dashboard.purchaseAmount");
+        Assert.assertEquals(totalSum,purchaseAmnt);
     }
 }
