@@ -22,13 +22,11 @@ public class BasicsDemo {
                 log().all().body("scope", equalTo("APP")).header("server","Apache/2.4.52 (Ubuntu)").
         extract().response().asString();
 
-        //System.out.println(response);
 
         //Json path to capture place_id in response
         JsonPath js = new JsonPath(response); //for parsing Json
         String placeID = js.get("place_id");
 
-        System.out.println(placeID);
 
         //Update address
         String newAddress = "20 Boston Hill, Johannesburg";
@@ -48,10 +46,9 @@ public class BasicsDemo {
 
         //JsonPath jsonP = new JsonPath(getPlaceResponse); //for parsing Json
         JsonPath jsonP = ReusableMethod.rawToJson(getPlaceResponse);
-        String actualnewAddress = jsonP.get("address");
+        String actualNewAddress = jsonP.get("address");
 
-        System.out.println(actualnewAddress);
-        Assert.assertEquals(actualnewAddress,newAddress); //testNG assert to validate
+        Assert.assertEquals(actualNewAddress,newAddress); //testNG assert to validate
 
 
 
