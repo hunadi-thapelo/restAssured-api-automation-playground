@@ -8,6 +8,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 public class DynamicJson {
 
@@ -22,6 +23,19 @@ public class DynamicJson {
         //Test case is to get ID from response
         String id = js.get("ID");
         System.out.println("ID: " + id);
+
+
+        //Test case delete book
+        given().header("Content-Type","application/json")
+                .body("{\n" +
+                        " \n" +
+                        "\"ID\" : \""+id+"\"\n" +
+                        " \n" +
+                        "}")
+                .when().post("/Library/DeleteBook.php")
+                .then().assertThat().statusCode(200)
+                .body("msg", equalTo("book is successfully deleted"));
+
     }
 
     @DataProvider (name = "booksData")
