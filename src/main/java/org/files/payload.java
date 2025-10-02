@@ -10,12 +10,12 @@ public class payload {
                 "    \"lng\": 33.427362\n" +
                 "  },\n" +
                 "  \"accuracy\": 50,\n" +
-                "  \"name\": \"Pikachu Dance Studio\",\n" +
-                "  \"phone_number\": \"(+27) 983 0917\",\n" +
-                "  \"address\": \"29, Steam Avenue, Johannesburg 2022\",\n" +
+                "  \"name\": \"Jazzy Dance Studio\",\n" +
+                "  \"phone_number\": \"(+27) 00 000 0000\",\n" +
+                "  \"address\": \"31, Steam Avenue, Johannesburg 2022\",\n" +
                 "  \"types\": [\n" +
-                "    \"shoe park\",\n" +
-                "    \"shop\"\n" +
+                "    \"dance studio\",\n" +
+                "    \"studio\"\n" +
                 "  ],\n" +
                 "  \"website\": \"http://google.com\",\n" +
                 "  \"language\": \"French-IN\"\n" +
