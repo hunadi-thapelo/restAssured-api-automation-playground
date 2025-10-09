@@ -18,15 +18,14 @@ public class AddJiraIssue {
                         "       {\n" +
                         "          \"key\": \"SCRUM\"\n" +
                         "       },\n" +
-                        "       \"summary\": \"POST /customers response payload missing description key.\",\n" +
+                        "       \"summary\": \"POST /customers response error message value empty \",\n" +
                         "       \"issuetype\": {\n" +
                         "          \"name\": \"Bug\"\n" +
                         "       }\n" +
                         "   }\n" +
                         "}")
-                .log().all()
                 .when().post("/rest/api/3/issue")
-                .then().assertThat().statusCode(201)
+                .then().log().all().assertThat().statusCode(201)
                 .extract().response().asString();
 
         JsonPath js = new JsonPath(createBugIssueResponse);
