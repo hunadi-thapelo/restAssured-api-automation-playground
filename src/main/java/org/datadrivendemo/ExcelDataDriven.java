@@ -1,7 +1,9 @@
 package org.datadrivendemo;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -12,6 +14,7 @@ import java.util.Iterator;
 
 public class ExcelDataDriven {
 
+    //RestAssured Course - Rahul
     public ArrayList<String> getData(String testCaseName) throws IOException {
 
         // Strategy to access Excel data with poi-ooxml and poi maven dependency setup
@@ -60,9 +63,17 @@ public class ExcelDataDriven {
 
                         //grab all cell content of the row
                         Iterator<Cell> actualCellColumn = columnRow.cellIterator();
+                        
                         while (actualCellColumn.hasNext()) {
-                            System.out.println(actualCellColumn.next().getStringCellValue());
-                            testCaseArr.add(actualCellColumn.next().getStringCellValue());
+
+                            Cell ac = actualCellColumn.next();
+
+                            if (ac.getCellType() == CellType.STRING) {
+                                testCaseArr.add(ac.getStringCellValue());
+                            }
+                            else {
+                                testCaseArr.add(NumberToTextConverter.toText(ac.getNumericCellValue()));
+                            }
                         }
                     }
                 }
