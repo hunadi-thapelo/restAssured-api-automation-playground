@@ -7,12 +7,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ExcelDataDriven {
 
-    public static void main(String[] args) throws IOException {
+    public ArrayList<String> getData(String testCaseName) throws IOException {
+
         // Strategy to access Excel data with poi-ooxml and poi maven dependency setup
+        ArrayList<String> testCaseArr = new ArrayList<>();
+
         //1. the fis object will have access to the Excel file; extension must be '.xlsx'
         FileInputStream fis = new FileInputStream("/Users/hunadimapulane/DemoDocs/datadrivendemodata.xlsx");
 
@@ -38,11 +42,11 @@ public class ExcelDataDriven {
                 int actualColumn = 0;
 
                 while(cell.hasNext()) {
-                     Cell cellValue = cell.next();
-                     if(cellValue.getStringCellValue().equalsIgnoreCase("testcases")) {
-                         System.out.println("Cell value is: " + cellValue);
-                         actualColumn = columnIndex;
-                     }
+                    Cell cellValue = cell.next();
+                    if(cellValue.getStringCellValue().equalsIgnoreCase("testcases")) {
+                        System.out.println("Cell value is: " + cellValue);
+                        actualColumn = columnIndex;
+                    }
                     columnIndex++;
                 }
 
@@ -52,17 +56,24 @@ public class ExcelDataDriven {
                 while(rows.hasNext()) {
                     Row columnRow = rows.next();
                     //this ensures we get cell at the targeted column
-                    if(columnRow.getCell(actualColumn).getStringCellValue().equalsIgnoreCase("profile")) {
+                    if(columnRow.getCell(actualColumn).getStringCellValue().equalsIgnoreCase(testCaseName)) {
 
                         //grab all cell content of the row
                         Iterator<Cell> actualCellColumn = columnRow.cellIterator();
                         while (actualCellColumn.hasNext()) {
                             System.out.println(actualCellColumn.next().getStringCellValue());
+                            testCaseArr.add(actualCellColumn.next().getStringCellValue());
                         }
                     }
                 }
             }
         }
+
+        return testCaseArr;
+    }
+
+    public static void main(String[] args) throws IOException {
+
     }
 
 }
