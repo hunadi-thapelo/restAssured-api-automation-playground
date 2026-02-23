@@ -11,7 +11,7 @@ public class ExcelDataDrivenTestDemo {
     public static void main(String[] args) throws IOException {
         ExcelDataDriven test = new ExcelDataDriven();
 
-        ArrayList<String> testData = test.getData("Profile");
+        ArrayList<String> testData = test.getData("AddnBook","restanssured");
         System.out.println(testData);
 
     }
