@@ -1,31 +1,35 @@
 package org.datadriven;
 
-import io.restassured.mapper.ObjectMapperType;
 import io.restassured.path.json.JsonPath;
+import org.datadrivendemo.ExcelDataDriven;
 import org.files.ReusableMethod;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
 
-public class AddBookRequest {
+public class AddBookRequestExcel {
 
     @Test
-    public void addBookTest() {
+    public void addBookTest() throws IOException {
 
         LibraryAPIBaseURIConfig.setup();
-        String addBookData = LibraryPayload.addBook();
+
+        ExcelDataDriven addBook = new ExcelDataDriven();
+        ArrayList<String> testData = addBook.getData("AddBook","restassured");
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("name", "Get ISTQB Certified with Sandy D");
-        map.put("isbn", "zxhsb");
-        map.put("aisle", "80001");
-        map.put("author", "Sandy Doe");
+        map.put("name", testData.get(1));
+        map.put("isbn", testData.get(2));
+        map.put("aisle", testData.get(3));
+        map.put("author", testData.get(4));
 
 
         String addBookResponse = given().header("Content-Type", "application/json")
-                .body(map, ObjectMapperType.JACKSON_2)
+                .body(map)
                 .when().post("/Library/Addbook.php")
                 .then().assertThat().statusCode(200)
                 .extract().response().asString();
@@ -33,7 +37,25 @@ public class AddBookRequest {
         JsonPath js = ReusableMethod.rawToJson(addBookResponse);
         String newBookID = js.get("ID");
         System.out.println(addBookResponse);
-        System.out.println(newBookID);
+        //System.out.println("ID: " +newBookID);
+        System.out.println("[" + newBookID + "]");
+        System.out.println(newBookID.length());
+
+
+        //GET
+        //LibraryAPIBaseURIConfig.setup();
+
+        String getBookAdded = given().log().all()
+                .queryParam("ID", newBookID)
+                .when().get("/Library/GetBook.php")
+                .then().assertThat().statusCode(200).log().all().extract().response().asString();
+
+        JsonPath js1 = ReusableMethod.rawToJson(getBookAdded);
+        String newBookISBN = js1.getString("isbn");
+        System.out.println(getBookAdded);
+        System.out.println("ISBN: " + newBookISBN);
+
+        System.out.println("This is my get response" + getBookAdded);
 
     }
 }

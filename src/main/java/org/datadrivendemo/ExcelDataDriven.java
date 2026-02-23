@@ -15,7 +15,7 @@ import java.util.Iterator;
 public class ExcelDataDriven {
 
     //RestAssured Course - Rahul
-    public ArrayList<String> getData(String testCaseName) throws IOException {
+    public ArrayList<String> getData(String testCaseName, String sheetName) throws IOException {
 
         // Strategy to access Excel data with poi-ooxml and poi maven dependency setup
         ArrayList<String> testCaseArr = new ArrayList<>();
@@ -34,7 +34,7 @@ public class ExcelDataDriven {
         for(int i=0; i < numberOfSheets; i++) {
 
             //if sheet name at index is the targeted sheet
-            if(workbook.getSheetName(i).equalsIgnoreCase("demodata")) {
+            if(workbook.getSheetName(i).equalsIgnoreCase(sheetName)) {
 
                 XSSFSheet sheet = workbook.getSheetAt(i);
                 Iterator<Row> rows = sheet.iterator(); //sheet is a collection of rows
@@ -81,10 +81,6 @@ public class ExcelDataDriven {
         }
 
         return testCaseArr;
-    }
-
-    public static void main(String[] args) throws IOException {
-
     }
 
 }
