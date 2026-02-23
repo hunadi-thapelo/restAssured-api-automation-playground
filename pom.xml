@@ -36,6 +36,13 @@
             <version>2.2</version>
         </dependency>
 
+        <!-- Source: https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.21.0</version>
+        </dependency>
+
         <!-- Data Driven Testing dependencies: org.apache.poi/poi -->
         <dependency>
             <groupId>org.apache.poi</groupId>
