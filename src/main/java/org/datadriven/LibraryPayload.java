@@ -1,14 +1,14 @@
 package org.datadriven;
 
-public class librarypayload {
+public class LibraryPayload {
 
     public static String addBook() {
 
         return "{\n" +
                 "\"name\":\"Get ISTQB Certified with Sandy D\",\n" +
-                "\"isbn\":\"ubc\",\n" +
-                "\"aisle\":\"37557\",\n" +
-                "\"author\":\"Sandy Doe\"\n" +
+                "\"isbn\":\"hsyhgit\",\n" +
+                "\"aisle\":\"9090057\",\n" +
+                "\"author\":\"Sandy P Doe\"\n" +
                 "}";
     }
 
