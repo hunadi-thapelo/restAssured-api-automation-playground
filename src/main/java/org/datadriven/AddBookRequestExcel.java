@@ -3,6 +3,7 @@ package org.datadriven;
 import io.restassured.path.json.JsonPath;
 import org.datadrivendemo.ExcelDataDriven;
 import org.files.ReusableMethod;
+import org.testng.ITestContext;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -14,12 +15,12 @@ import static io.restassured.RestAssured.given;
 public class AddBookRequestExcel {
 
     @Test
-    public void addBookTest() throws IOException {
+    public void addBookTest(ITestContext context) throws IOException {
 
         LibraryAPIBaseURIConfig.setup();
 
         ExcelDataDriven addBook = new ExcelDataDriven();
-        ArrayList<String> testData = addBook.getData("AddBook","restassured");
+        ArrayList<String> testData = addBook.getData("AddBook", "restassured");
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("name", testData.get(1));
@@ -40,10 +41,14 @@ public class AddBookRequestExcel {
         //System.out.println("ID: " +newBookID);
         System.out.println("[" + newBookID + "]");
         System.out.println(newBookID.length());
+        context.setAttribute("ID",newBookID);
+    }
 
-
+    @Test(dependsOnMethods = "addBookTest")
+    public void getAddBook(ITestContext context){
         //GET
         //LibraryAPIBaseURIConfig.setup();
+        String newBookID = (String) context.getAttribute("ID");
 
         String getBookAdded = given().log().all()
                 .queryParam("ID", newBookID)
@@ -56,6 +61,5 @@ public class AddBookRequestExcel {
         System.out.println("ISBN: " + newBookISBN);
 
         System.out.println("This is my get response" + getBookAdded);
-
     }
 }
