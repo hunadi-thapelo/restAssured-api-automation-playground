@@ -39,5 +39,13 @@ public class AddBookRequestJsonPayload {
 
         System.out.println("This is my get response" + getBookAdded);
 
+       String deleteBook = given().header("Content-Type", "application/json")
+                .body("{\n" +
+                          "\"ID\":\""+newBookID+"\"\n" +
+                        "}").when().post("/Library/DeleteBook.php")
+                .then().log().all().assertThat().statusCode(200).extract().asString();
+
+        System.out.println("this is the delete response" + deleteBook);
+
     }
 }

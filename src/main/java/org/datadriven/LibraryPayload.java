@@ -5,9 +5,9 @@ public class LibraryPayload {
     public static String addBook() {
 
         return "{\n" +
-                "\"name\":\"Get ISTQB Certified with Sandy D\",\n" +
-                "\"isbn\":\"hsyhgit\",\n" +
-                "\"aisle\":\"9090057\",\n" +
+                "\"name\":\"Become a QA Lead with Sandy D\",\n" +
+                "\"isbn\":\"abcde\",\n" +
+                "\"aisle\":\"5011\",\n" +
                 "\"author\":\"Sandy P Doe\"\n" +
                 "}";
     }
