@@ -4,14 +4,18 @@ import io.restassured.path.json.JsonPath;
 import org.files.ReusableMethod;
 import org.testng.ITestContext;
 import org.testng.annotations.Test;
+import io.qameta.allure.*;
 
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 
+@Epic("Library Service")
 public class AddBookRequestJsonPayload {
 
     @Test
+    @Story("Add a new book")
+    @Description("Verify that user can add a new book to the library")
     public void addBookTest(ITestContext context) {
 
         LibraryAPIBaseURIConfig.setup();
@@ -31,6 +35,8 @@ public class AddBookRequestJsonPayload {
     }
 
     @Test(dependsOnMethods = "addBookTest")
+    @Story("Get book by ID")
+    @Description("Verify that user can search a book by ID")
     public void getBookByIDTest(ITestContext context) {
 
         //GET by ID
@@ -60,6 +66,8 @@ public class AddBookRequestJsonPayload {
 //    }
 
     @Test(dependsOnMethods = {"addBookTest", "getBookByIDTest"},alwaysRun = true)
+    @Story("Remove book from library")
+    @Description("Verify that user can delete a book from library")
     public void deleteBookTest(ITestContext context) {
 
         String newBookID = (String) context.getAttribute("ID");
