@@ -1,0 +1,11 @@
+
+target/
+
+## Mac OS ##
+.DS_Store
+
+# IntelliJ
+.idea/
+
+# Allure
+allure-results/
