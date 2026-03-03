@@ -1,20 +1,21 @@
 package org.datadriven;
 
-import io.restassured.mapper.ObjectMapperType;
 import io.restassured.path.json.JsonPath;
 import org.files.ReusableMethod;
+import org.testng.ITestContext;
 import org.testng.annotations.Test;
 
-import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
 
 public class AddBookRequestJsonPayload {
 
     @Test
-    public void addBookTest() {
+    public void addBookTest(ITestContext context) {
 
         LibraryAPIBaseURIConfig.setup();
+
         String addBookData = LibraryPayload.addBook();
 
         String addBookResponse = given().header("Content-Type", "application/json")
@@ -25,27 +26,50 @@ public class AddBookRequestJsonPayload {
 
         JsonPath js = ReusableMethod.rawToJson(addBookResponse);
         String newBookID = js.get("ID");
-        System.out.println(addBookResponse);
         System.out.println(newBookID);
+        context.setAttribute("ID", newBookID);
+    }
 
-        String getBookAdded = given().queryParam("AuthorName", "Sandy P Doe")
-                .when().log().all().get("/Library/GetBook.php")
-                .then().log().all().assertThat().statusCode(200).extract().response().asString();
+    @Test(dependsOnMethods = "addBookTest")
+    public void getBookByIDTest(ITestContext context) {
 
-//        JsonPath js1 = ReusableMethod.rawToJson(getBookAdded);
-//        String newqBookISBN = js1.get("isbn");
-//        System.out.println(getBookAdded);
-//        System.out.println("ISBN: " +newqBookISBN);
+        //GET by ID
+        String newBookID = (String) context.getAttribute("ID");
 
-        System.out.println("This is my get response" + getBookAdded);
+        String getBookByIDResponse = given().queryParam("ID", newBookID)
+                .when().get("/Library/GetBook.php")
+                .then().assertThat().statusCode(200).extract().response().asString();
 
-       String deleteBook = given().header("Content-Type", "application/json")
+        //assert that it is an array and it is not empty
+        //assert that the ID sent is the same id returned
+        //assert that the book name returned is the same book expected
+
+        System.out.println("GET BOOK BY ID RESPONSE: " + getBookByIDResponse);
+
+    }
+
+//    @Test
+//    public void getBookByAuthorTest() {
+//        //GET by Author name
+//        String getBookAdded = given().queryParam("AuthorName", "Sandy P Doe")
+//                .when().log().all().get("/Library/GetBook.php")
+//                .then().log().all().assertThat().statusCode(200).extract().response().asString();
+//
+//
+//        System.out.println("GET BOOK BY AUTHOR RESPONSE: " + getBookAdded);
+//    }
+
+    @Test(dependsOnMethods = {"addBookTest", "getBookByIDTest"},alwaysRun = true)
+    public void deleteBookTest(ITestContext context) {
+
+        String newBookID = (String) context.getAttribute("ID");
+
+       given().header("Content-Type", "application/json")
                 .body("{\n" +
                           "\"ID\":\""+newBookID+"\"\n" +
                         "}").when().post("/Library/DeleteBook.php")
-                .then().log().all().assertThat().statusCode(200).extract().asString();
-
-        System.out.println("this is the delete response" + deleteBook);
-
+                .then().log().all().assertThat().statusCode(200)
+               .body("msg", containsString("deleted"))
+               .extract().asString();
     }
 }
