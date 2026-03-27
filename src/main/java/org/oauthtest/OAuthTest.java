@@ -1,7 +1,9 @@
 package org.oauthtest;
 
 import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 
+import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
 public class OAuthTest {
@@ -10,27 +12,42 @@ public class OAuthTest {
 
 
         //POST METHOD
-       String response = given()
-                .formParams("client_id", "")
-                .formParams("client_secret", "")
+        String postResponse = given()
+                .formParams("client_id", "692183103107-p0m7ent2hk7suguv4vq22hjcfhcr43pj.apps.googleusercontent.com")
+                .formParams("client_secret", "erZOWM9g3UtwNRj340YYaK_W")
                 .formParams("grant_type","client_credentials")
                 .formParams("scope", "trust")
                 .when().log().all().post("https://rahulshettyacademy.com/oauthapi/oauth2/resourceOwner/token").asString();
 
-        System.out.println(response);
+        System.out.println(postResponse);
+        //EXAMPLE RESPONSE PRINTED TO CONSOLE: {"access_token":"ojLk4bnRyHfzuocuS9CtTQ==","token_type":"Bearer","expires_in":3600,"refresh_token":"NkzN6v5oZJ1XFMX0DD6hig==","scope":"create"}
 
         //use JsonPath to parse the response
-        JsonPath jsPath = new JsonPath(response); //we are parsing a String from the above response
+        JsonPath jsPath = new JsonPath(postResponse); //we are parsing a String from the above response
         String accessToken = jsPath.getString("access_token"); //we want to get the String value of access_token key and we store it in a String variable
 
 
         //Once we have the accessToken, we want to access the CourseDetails which needs us to have the access token first
 
         //GET METHOD
-       String getResponse = given().queryParam("access_token", accessToken) //passing accessToken variable as it has the access token value stored
-                .when().log().all()
-                .get("https://rahulshettyacademy.com/oauthapi/getCourseDetails").asString();
+        Response getResponse = given().queryParam("access_token", accessToken) //passing accessToken variable as it has the access token value stored
+                .when()
+                .get("https://rahulshettyacademy.com/oauthapi/getCourseDetails");
+
+        String responseBody = given().queryParam("access_token", accessToken) //passing accessToken variable as it has the access token value stored
+                .when()
+                .get("https://rahulshettyacademy.com/oauthapi/getCourseDetails").then().assertThat().statusCode(401)
+                .extract().response().asString();
+
 
         System.out.println(getResponse);
+        System.out.println("This is the GET response body: " + responseBody);
+
+//        JsonPath jsPath = getResponse.jsonPath();
+//        jsPath.getString();
+
+
+
+
     }
 }
