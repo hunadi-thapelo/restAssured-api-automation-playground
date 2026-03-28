@@ -2,6 +2,7 @@ package org.oauthtest;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.pojo.GetCourse;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
@@ -19,7 +20,7 @@ public class OAuthTest {
                 .formParams("scope", "trust")
                 .when().log().all().post("https://rahulshettyacademy.com/oauthapi/oauth2/resourceOwner/token").asString();
 
-        System.out.println(postResponse);
+//        System.out.println(postResponse);
         //EXAMPLE RESPONSE PRINTED TO CONSOLE: {"access_token":"ojLk4bnRyHfzuocuS9CtTQ==","token_type":"Bearer","expires_in":3600,"refresh_token":"NkzN6v5oZJ1XFMX0DD6hig==","scope":"create"}
 
         //use JsonPath to parse the response
@@ -39,9 +40,17 @@ public class OAuthTest {
                 .get("https://rahulshettyacademy.com/oauthapi/getCourseDetails").then().assertThat().statusCode(401)
                 .extract().response().asString();
 
+//        System.out.println(getResponse);
+//        System.out.println("This is the GET response body: " + responseBody);
 
-        System.out.println(getResponse);
-        System.out.println("This is the GET response body: " + responseBody);
+        //Test Requirement: Get API course details
+        //java object variable so we can use the pojo get method in any
+        GetCourse gc = given().queryParam("access_token", accessToken)
+                .when()
+                .get("https://rahulshettyacademy.com/oauthapi/getCourseDetails")
+                .as(GetCourse.class);
+
+        System.out.println(gc.getCourses().getApi().get(0).getCourseTitle());
 
 //        JsonPath jsPath = getResponse.jsonPath();
 //        jsPath.getString();
