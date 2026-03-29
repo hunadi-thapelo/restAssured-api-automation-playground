@@ -2,7 +2,10 @@ package org.oauthtest;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.pojo.Api;
 import org.pojo.GetCourse;
+
+import java.util.List;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
@@ -50,12 +53,21 @@ public class OAuthTest {
                 .get("https://rahulshettyacademy.com/oauthapi/getCourseDetails")
                 .as(GetCourse.class);
 
-        System.out.println(gc.getCourses().getApi().get(0).getCourseTitle());
+        System.out.println(gc.getCourses().getApi().get(1).getCourseTitle());
 
-//        JsonPath jsPath = getResponse.jsonPath();
-//        jsPath.getString();
+        //Test Requirement: Dynamically Get SoapUI Webservices testing API course price details
 
+        List<Api> apiCourses = gc.getCourses().getApi();
 
+        for(int i = 0; i < gc.getCourses().getApi().size(); i++){
+
+            if(apiCourses.get(i)
+                    .getCourseTitle()
+                    .equalsIgnoreCase("SoapUI Webservices testing")){
+                System.out.println(apiCourses.get(i).getPrice());
+            }
+
+        }
 
 
     }
