@@ -4,16 +4,20 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.pojo.Api;
 import org.pojo.GetCourse;
+import org.pojo.WebAutomation;
+import org.testng.Assert;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
 public class OAuthTest {
 
     public static void main(String[] args) {
 
+        String[] courseTitles = {"Selenium Webdriver Java", "Cypress", "Protractor"};
 
         //POST METHOD
         String postResponse = given()
@@ -68,6 +72,22 @@ public class OAuthTest {
             }
 
         }
+
+        //Test Requirement: Verify the course titles for web automation
+
+        ArrayList<String> actualCourseTitles = new ArrayList<>();
+        List<WebAutomation> webAutomationCourses = gc.getCourses().getWebAutomation();
+
+        for(int j =0; j < webAutomationCourses.size(); j++){
+
+            actualCourseTitles.add(webAutomationCourses.get(j).getCourseTitle());
+        }
+
+        //convert courseTitles array into arrayList
+        List<String> expectedCourseTitles = Arrays.asList(courseTitles);
+        //using testNG assertion method
+        Assert.assertTrue(actualCourseTitles.equals(expectedCourseTitles));
+
 
 
     }
